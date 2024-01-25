@@ -51,9 +51,10 @@ open class MarkdownView: UIView {
     super.init(frame : frame)
     
     let updateHeightHandler = UpdateHeightHandler { [weak self] height in
-      guard height > self?.intrinsicContentHeight ?? 0 else { return }
+      guard height >= self?.intrinsicContentHeight ?? 0 else { return }
       self?.onRendered?(height)
       self?.intrinsicContentHeight = height
+      NotificationCenter.default.post(name: NSNotification.Name.init(rawValue: "updateMdViewHeight"), object: height)
     }
     self.updateHeightHandler = updateHeightHandler
   }
